@@ -261,15 +261,28 @@ extension ProgressHUD {
 	private func setupToolbar() {
 		if (toolbarHUD == nil) {
 			toolbarHUD = UIToolbar(frame: CGRect.zero)
-			toolbarHUD?.isTranslucent = true
-			toolbarHUD?.clipsToBounds = true
-			toolbarHUD?.layer.cornerRadius = 10
-			toolbarHUD?.layer.masksToBounds = true
-			viewBackground?.addSubview(toolbarHUD!)
-		}
-
-		toolbarHUD?.backgroundColor = colorHUD
-	}
+            toolbarHUD?.isTranslucent = true
+            toolbarHUD?.clipsToBounds = true
+            toolbarHUD?.layer.cornerRadius = 30
+            toolbarHUD?.layer.masksToBounds = true
+            
+            let container = UIVisualEffectView(frame: CGRect.zero)
+            container.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            container.layer.cornerRadius = 30
+            container.layer.masksToBounds = true
+            
+            if #available(iOS 26.0, *) {
+                container.effect = UIGlassEffect()
+            } else {
+                container.effect = UIBlurEffect(style: .systemMaterial)
+                toolbarHUD?.layer.cornerRadius = 30
+                toolbarHUD?.layer.masksToBounds = true
+            }
+            toolbarHUD?.addSubview(container)
+            
+            viewBackground?.addSubview(toolbarHUD!)
+        }
+    }
 }
 
 // MARK: - Status Label
